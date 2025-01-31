@@ -23,28 +23,12 @@ class ChartController {
                     backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
                 }]
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: '3D Pie Chart'
-                    }
-                }
-            }
         };
 
-        try {
-            const image = await chartJSNodeCanvas.renderToBuffer(configuration);
-            res.set('Content-Type', 'image/png');
-            res.send(image);
-        } catch (error) {
-            res.status(500).send('Error generating chart');
-        }
+        const image = await chartJSNodeCanvas.renderToBuffer(configuration);
+        res.set('Content-Type', 'image/png');
+        res.send(image);
     }
 }
 
-module.exports = new ChartController();
+module.exports = ChartController;

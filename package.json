@@ -7,10 +7,11 @@
     "start": "node src/app.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "chart.js": "^3.7.0",
+    "body-parser": "^1.19.0",
     "canvas": "^2.8.0",
-    "body-parser": "^1.19.0"
+    "chart.js": "^3.7.0",
+    "chartjs-node-canvas": "^4.1.6",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-microservice",
+  "version": "1.0.0",
+  "description": "A Node.js microservice that generates a 3D pie chart using Chart.js.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "chart.js": "^3.7.0",
+    "canvas": "^2.8.0",
+    "body-parser": "^1.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "author": "",
+  "license": "ISC"
+}

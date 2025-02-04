@@ -1,3 +1,9 @@
+import { Root } from '@amcharts/amcharts5/.internal/core/Root.js';
+import { PieChart } from '@amcharts/amcharts5/.internal/charts/pie/PieChart.js';
+import { PieSeries } from '@amcharts/amcharts5/.internal/charts/pie/PieSeries.js';
+import * as am5 from '@amcharts/amcharts5/index.js';
+import { Animation } from '@amcharts/amcharts5/.internal/core/util/Animation.js';
+
 class ChartController {
     async createChart(req, res) {
         const chartData = req.body;
@@ -7,43 +13,30 @@ class ChartController {
             return res.status(400).send('Invalid data');
         }
 
-        // Generate the chart using Chart.js
-        const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
-        const width = 800; // Set the width of the chart
-        const height = 600; // Set the height of the chart
-        const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
+        // Create chart instance
+        let root = Root.new("chartdiv");
+        let chart = root.container.children.push(
+            PieChart.new(root, {})
+        );
 
-        const configuration = {
-            type: 'pie',
-            data: {
-                labels: chartData.labels,
-                datasets: [{
-                    label: 'My Dataset',
-                    data: chartData.sizes,
-                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-                }]
-            },
-            options: {
-                responsive: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'right',
-                    },
-                },
-            },
-        };
+        // Add data
+        chart.data = chartData;
 
-        try {
-        const image = await chartJSNodeCanvas.renderToBuffer(configuration);
-        res.set('Content-Type', 'image/png');
-        res.send(image);
-        }
-        catch (error) {
-            console.error(error);
-            res.status(500).send('An error occurred while generating the chart');
-        }
+        // Add and configure Series
+        let pieSeries = chart.series.push(PieSeries.new(root, {
+            name: "Series",
+            dataFields: {
+                value: "sizes",
+                category: "labels",
+            },
+        }));
+        pieSeries.slices.template.setAll({
+            fill: am5.color(chartData.colors),
+        });
+
+        // return a byte array of the chart
+        return res.send(chart.toBlob());
     }
 }
 
-module.exports = ChartController;
+export default ChartController;

@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "A Node.js microservice that generates a 3D pie chart using Chart.js.",
   "main": "src/app.js",
+  "type": "module",
   "scripts": {
     "start": "node src/app.js"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.11.0",
     "body-parser": "^1.19.0",
-    "canvas": "^2.8.0",
-    "chart.js": "^3.9.1",
-    "chartjs-node-canvas": "^4.1.6",
-    "express": "^4.17.1"
+    "core-js": "^3.40.0",
+    "express": "^4.21.2",
+    "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

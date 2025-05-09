@@ -1,8 +1,5 @@
-import { Root } from '@amcharts/amcharts5/.internal/core/Root.js';
-import { PieChart } from '@amcharts/amcharts5/.internal/charts/pie/PieChart.js';
-import { PieSeries } from '@amcharts/amcharts5/.internal/charts/pie/PieSeries.js';
-import * as am5 from '@amcharts/amcharts5/index.js';
-import { Animation } from '@amcharts/amcharts5/.internal/core/util/Animation.js';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
 
 class ChartController {
     async createChart(req, res) {
@@ -14,25 +11,16 @@ class ChartController {
         }
 
         // Create chart instance
-        let root = Root.new("chartdiv");
-        let chart = root.container.children.push(
-            PieChart.new(root, {})
-        );
+        let chart = am4core.create("chartdiv", am4charts.PieChart3D);
+        chart.hiddenState.properties.opacity = 0; // this creates initial fade-in effect
+        chart.legend = new am4charts.Legend();
 
         // Add data
         chart.data = chartData;
-
-        // Add and configure Series
-        let pieSeries = chart.series.push(PieSeries.new(root, {
-            name: "Series",
-            dataFields: {
-                value: "sizes",
-                category: "labels",
-            },
-        }));
-        pieSeries.slices.template.setAll({
-            fill: am5.color(chartData.colors),
-        });
+        let series = chart.series.push(new am4charts.PieSeries3D());
+        series.dataFields.value = "sizes";
+        series.dataFields.category = "labels";
+        series.slices.template.propertyFields.fill = "colors"; // Set the color of each slice
 
         // return a byte array of the chart
         return res.send(chart.toBlob());
